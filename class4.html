@@ -1,0 +1,646 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>Intro to Databases - Girl Develop It</title>
+
+		<meta name="description" content="Introduction to Databases.
+
+    The course is meant to be taught in four two-hour workshops.">
+		<meta name="author" content="Girl Develop It">
+
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/gdicool.css" id="theme">
+
+		<!-- For syntax highlighting -->
+		<!-- light editor--><link rel="stylesheet" href="lib/css/light.css">
+		<!-- dark editor<link rel="stylesheet" href="lib/css/dark.css">-->
+
+		<!-- If use the PDF print sheet so students can print slides-->
+
+		<link rel="stylesheet" href="css/print/pdf.css" type="text/css" media="print">
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+				<section>
+					<h3>Introduction to Databases</h3>
+					<h4>Class 4 - Joins &amp; More</h4>
+                    <img src="images/gdi_logo_badge.png" alt="" />
+				</section>
+
+				<!-- Welcome-->
+				<section>
+					<h3>Welcome!</h3>
+					<div class = "left-align">
+					<p>Girl Develop It is here to provide affordable and accessible programs to learn software through mentorship and hands-on instruction.</p>
+					<p class ="green">Some "rules"</p>
+					<ul>
+						<li>We are here for you!</li>
+						<li>Every question is important</li>
+						<li>Help each other</li>
+						<li>Have fun</li>
+					</ul>
+					</div>
+				</section>
+
+		    <section>
+					<h3>Overview</h3>
+					<ul>
+						<!--<li>Brief Relational Algebra Overview</li>-->
+						<li>SQL Joins</li>
+						<li>Bonus Material (time permitting):
+							<ul>
+								<li>Functions</li>
+								<li>Indexes</li>
+								<li>Views</li>
+								<li>Triggers</li>
+								<li>Transactions</li>
+							</ul></li>
+					</ul>
+        </section>
+
+				<section>
+					<h3>Joining Tables</h3>
+					<p>Finally, the real power of SQL!</p>
+					<p>The SQL JOIN clause combines records from two or more tables in a database.
+					You will primarly use two types of joins, with some variations on these.</p>
+					<ul>
+						<li>Inner Join</li>
+						<li>Outer Join</li>
+					</ul>
+				</section>
+
+				<section>
+					<h3>Our Tables</h3>
+					<p>To illustrate these joins, let's say we have TableA and TableB.
+						We want to join these tables in a variety of ways.</p>
+					<pre><code contenteditable class="JavaScript">TableA                    TableB
+=================          =================
+id    name                 id     name
+=================          =================
+1     Pirate               1      Rutabaga
+2     Monkey               2      Pirate
+3     Ninja                3      Darth Vader
+4     Spaghetti            4      Ninja
+</code></pre>
+				</section>
+
+				<section>
+					<h3>INNER JOIN</h3>
+					<ul>
+						<li>The Inner Join is the most common type of join.</li>
+						<li>It's so common that it's the default join type for SQLite.</li>
+						<li>Selects only records that match both of the tables you are joining.</li>
+					</ul>
+					<pre><code contenteditable class="JavaScript">TableA                    TableB
+=================          =================
+id    name                 id     name
+=================          =================
+1     Pirate               1      Rutabaga
+2     Monkey               2      Pirate
+3     Ninja                3      Darth Vader
+4     Spaghetti            4      Ninja
+</code></pre>
+				</section>
+
+				<section>
+					<h3>Inner Join</h3>
+					<p>Selects only the records that match both TableA and TableB</p>
+					<img style="height:250px" src="images/innerjoin.png"/>
+					<pre><code contenteditable class="JavaScript">SELECT * from TableA
+INNER JOIN TableB
+ON TableA.name = TableB.name;
+
+=================          =================
+id    name                 id     name
+=================          =================
+1     Pirate               2      Pirate
+3     Ninja                4      Ninja
+</code></pre>
+				</section>
+
+				<section>
+					<h3>Let's Develop It!</h3>
+					<p>Write a SQL Query that returns the following from the Chinook Database.</p>
+					<ul>
+						<li>Album Id</li>
+						<li>Album Title</li>
+						<li>Artist Name</li>
+					</ul>
+				</section>
+
+				<section>
+					<h3>Solution</h3>
+					<pre><code contenteditable class="JavaScript">SELECT Album.AlbumId, Album.Title as AlbumTitle,
+    Artist.Name as ArtistName
+FROM Album
+JOIN Artist
+    ON Album.ArtistId = Artist.ArtistId;
+</code></pre>
+				</section>
+
+				<section>
+					<h3>Let's Develop It!</h3>
+					<p>Write a SQL Query that returns the following from the Chinook Database.</p>
+					<ul>
+						<li>Artist Name</li>
+						<li>Album Title</li>
+						<li>Track Name</li>
+						<li>Genre Name</li>
+						<li>Composer</li>
+						<li>Unit Price</li>
+					</ul>
+				</section>
+
+				<section>
+					<h3>Solution</h3>
+					<pre><code contenteditable class="JavaScript">SELECT Artist.Name, Album.Title as AlbumTitle,
+    Track.Name as TrackName, Genre.Name,
+    Track.Composer, Track.UnitPrice
+FROM Album
+JOIN Artist
+    ON Album.ArtistId = Artist.ArtistId
+JOIN Track
+    ON Track.AlbumId = Album.AlbumId
+JOIN Genre
+    ON Genre.GenreId = Track.GenreId;
+</code></pre>
+				</section>
+
+				<section>
+					<h3>FULL OUTER JOIN</h3>
+					<ul>
+						<li>The Full Outer Join produces all sets of records in TableA and TableB.</li>
+						<li>Records from both sides are included, where available.</li>
+						<li>If there is no matching record, the missing side will have a null value.</li>
+						<li><em>Note: Full Outer Joins are not supported by SQLite</em></li>
+					</ul>
+					<pre><code contenteditable class="JavaScript">TableA                    TableB
+=================          =================
+id    name                 id     name
+=================          =================
+1     Pirate               1      Rutabaga
+2     Monkey               2      Pirate
+3     Ninja                3      Darth Vader
+4     Spaghetti            4      Ninja
+</code></pre>
+				</section>
+
+				<section>
+					<h3>FULL OUTER JOIN</h3>
+					<p>Selects all sets of records from TableA and TableB.</p>
+					<img style="height:250px" src="images/fullouterjoin.png"/>
+					<pre><code contenteditable class="JavaScript">SELECT * from TableA
+FULL OUTER JOIN TableB
+ON TableA.name = TableB.name;
+
+=================          =================
+id    name                 id     name
+=================          =================
+1     Pirate               2      Pirate
+2     Monkey	             null   null
+3     Ninja                4      Ninja
+4     Spaghetti            null   null
+null  null                 1      Rutabaga
+null  null                 3      Darth Vader
+</code></pre>
+				</section>
+
+				<section>
+					<h3>LEFT OUTER JOIN</h3>
+					<ul>
+						<li>The Left Outer Join produces all records from TableA, with matching records
+							from TableB if they are available.</li>
+						<li>If there is no matching record in TableB, the right side will have a null value.</li>
+					</ul>
+					<pre><code contenteditable class="JavaScript">TableA                    TableB
+=================          =================
+id    name                 id     name
+=================          =================
+1     Pirate               1      Rutabaga
+2     Monkey               2      Pirate
+3     Ninja                3      Darth Vader
+4     Spaghetti            4      Ninja
+</code></pre>
+				</section>
+
+				<section>
+					<h3>LEFT OUTER JOIN</h3>
+					<p>Selects all sets of records from TableA and TableB.</p>
+					<img style="height:250px" src="images/leftouterjoin.png"/>
+					<pre><code contenteditable class="JavaScript">SELECT * from TableA
+LEFT OUTER JOIN TableB
+ON TableA.name = TableB.name;
+
+=================          =================
+id    name                 id     name
+=================          =================
+1     Pirate               2      Pirate
+2     Monkey	             null   null
+3     Ninja                4      Ninja
+4     Spaghetti            null   null
+</code></pre>
+				</section>
+
+				<section>
+					<h3>Records in TableA, but not TableB</h3>
+					<ul>
+						<li>Let's say we want to know all of the records in TableA that don't also appear in TableB.</li>
+						<li>We can do this by adding a WHERE clause to our left outer join.</li>
+					</ul>
+					<pre><code contenteditable class="JavaScript">TableA                    TableB
+=================          =================
+id    name                 id     name
+=================          =================
+1     Pirate               1      Rutabaga
+2     Monkey               2      Pirate
+3     Ninja                3      Darth Vader
+4     Spaghetti            4      Ninja
+</code></pre>
+				</section>
+
+				<section>
+					<h3>Records in TableA, but not TableB</h3>
+					<p>Remembere that the left outer join gave us null values for the right
+						side if there was no corresponding record in TableB. We can now use
+					this information to isolate the records we want.</p>
+					<img style="height:250px" src="images/in_a_but_not_b.png"/>
+					<pre><code contenteditable class="JavaScript">SELECT * from TableA
+LEFT OUTER JOIN TableB
+ON TableA.name = TableB.name
+WHERE TableB.id IS null;
+
+=================          =================
+id    name                 id     name
+=================          =================
+2     Monkey	          null   null
+4     Spaghetti            null   null
+</code></pre>
+				</section>
+
+				<section>
+					<h3>Records in TableA OR TableB, but not in both</h3>
+					<ul>
+						<li>Let's say we want to know all of the records in TableA or TableB,
+							but want to exclude records that appear in both.</li>
+						<li>We can do this by adding a WHERE clause to a full outer join.</li>
+					</ul>
+					<pre><code contenteditable class="JavaScript">TableA                    TableB
+=================          =================
+id    name                 id     name
+=================          =================
+1     Pirate               1      Rutabaga
+2     Monkey               2      Pirate
+3     Ninja                3      Darth Vader
+4     Spaghetti            4      Ninja
+</code></pre>
+				</section>
+
+				<section>
+					<h3>Records in TableA OR TableB, but not in both</h3>
+					<p>This will give us records unique to TableA OR TableB.</p>
+					<img style="height:250px" src="images/unique_to_a_and_b.png"/>
+					<pre><code contenteditable class="JavaScript">SELECT * from TableA
+FULL OUTER JOIN TableB
+ON TableA.name = TableB.name
+WHERE TableA.id IS null
+OR TableB.id IS null;
+
+=================          =================
+id    name                 id     name
+=================          =================
+2     Monkey	          null   null
+4     Spaghetti            null   null
+null  null                 1      Rutabaga
+null  null                 3      Darth Vader
+</code></pre>
+				</section>
+
+				<section>
+					<h3>Let's Develop It!</h3>
+					<p>Write a SQL query that returns album and track information for
+						tracks where the composer information is missing.</p>
+				</section>
+
+				<section>
+					<h3>Solution</h3>
+					<pre><code contenteditable class="JavaScript">SELECT * from Album
+JOIN Track
+    ON Track.AlbumId = Album.AlbumId
+WHERE Track.Composer IS null;
+</code></pre>
+				</section>
+
+				<section>
+					<h3>Ordering Data</h3>
+					<p>Data from a SELECT statement can be ordered with the ORDER BY clause.</p>
+					<pre><code contenteditable class="JavaScript">SELECT * from Invoice
+ORDER BY InvoiceDate DESC;
+</code></pre>
+					<p>The results will be ordered from newest to oldest. Following the
+						keyword with ASC gives us the reverse order.</p>
+				</section>
+
+				<section>
+					<h3>Group By</h3>
+					<p>Data can also be grouped by identical values using the GROUP BY clause.</p>
+					<pre><code contenteditable class="JavaScript">SELECT * from Invoice
+GROUP BY CustomerId;
+</code></pre>
+					<p>This query will return all invoices grouped by customer.</p>
+				</section>
+
+				<section>
+					<h3>Functions</h3>
+					<p>SQLite has three types of functions:</p>
+					<ul>
+						<li>Core functions</li>
+						<li>Aggregate functions</li>
+						<li>Date &amp; Time functions</li>
+					</ul><br><br>
+					<p>Functions give you built-in functionality that allow you to do more with your data.</p>
+				</section>
+
+				<section>
+					<h3>Core Functions</h3>
+					<table>
+						<tr>
+							<td style="width:30%">sqlite_version()</td>
+							<td>Returns the version of the SQLite library</td>
+						</tr>
+						<tr>
+							<td>random()</td>
+							<td>Returns a pseudo-random integer</td>
+						</tr>
+						<tr>
+							<td>abs()</td>
+							<td>Returns the absolute value of a numerical argument</td>
+						</tr>
+						<tr>
+							<td>max()</td>
+							<td>Returns the maximum value</td>
+						</tr>
+						<tr>
+							<td>min()</td>
+							<td>Returns the minimum value</td>
+						</tr>
+						<tr>
+							<td>upper()</td>
+							<td>Converts characters into upper case</td>
+						</tr>
+						<tr>
+							<td>lower()</td>
+							<td>Converts characters into lower case</td>
+						</tr>
+						<tr>
+							<td>length()</td>
+							<td>Returns the length of a string of text</td>
+						</tr>
+						<tr>
+							<td>total_changes()</td>
+							<td>Returns the number of row changes since the current database connection was opened.</td>
+						</tr>
+					</table>
+				</section>
+
+				<section>
+					<h3>Aggregate Functions</h3>
+					<table>
+						<tr>
+							<td style="width:40%">count(*)</td>
+							<td>Returns the number of rows matching the query</td>
+						</tr>
+						<tr>
+							<td>count(id)</td>
+							<td>Returns the number of rows matching the query where the given column is not null</td>
+						</tr>
+						<tr>
+							<td>count(DISTINCT col)</td>
+							<td>Using DISTINCT with count returns the unique count</td>
+						</tr>
+						<tr>
+							<td>avg()</td>
+							<td>Returns the average value of all non-null values</td>
+						</tr>
+						<tr>
+							<td>sum()</td>
+							<td>Returns the sum of all non-null values</td>
+						</tr>
+					</table>
+				</section>
+
+				<section>
+					<h3>Date &amp; Time Functions</h3>
+					<table>
+						<tr>
+							<td>date('now')</td>
+							<td>Returns the current date (Example: 2014-01-01)</td>
+						</tr>
+						<tr>
+							<td>datetime('now')</td>
+							<td>Returns the current date and time (Example: 2014-01-01 13:12:01)</td>
+						</tr>
+						<tr>
+							<td>time('now')</td>
+							<td>Return the current time (Example: 13:12:01)</td>
+						</tr>
+					</table>
+				</section>
+
+				<section>
+					<h3>Date &amp; Time Modifiers</h3>
+					<p>You can pass one or more modifiers to the date(), time() and datetime() functions.</p>
+					<pre><code contenteditable class="JavaScript">sqlite> SELECT date('now', '2 months');
+2014-07-29
+</code></pre>
+					<p>Months and days can be passed as a modifier to add to the current date.</p>
+					<pre><code contenteditable class="JavaScript">sqlite> SELECT date('now', '-55 days');
+2014-04-04
+</code></pre>
+					<p>Likewise, you can subtract months and days.</p>
+				</section>
+
+				<section>
+					<h3>Date &amp; Time Modifiers</h3>
+					<p>Other modifiers include:</p>
+					<table>
+						<tr>
+							<td style="width:30%">'start of year'</td>
+							<td>Returns the start of the year</td>
+						</tr>
+						<tr>
+							<td>'start of day'</td>
+							<td>Returns the start of the day (00:00:00)</td>
+						</tr>
+						<tr>
+							<td>'weekday 0'</td>
+							<td>Advances to to the next date where the day of the week matches the number passed,
+								where 0 is Sunday, 1 is Monday, ..., Saturday is 6.</td>
+						</tr>
+					</table>
+				</section>
+
+				<section>
+					<h3>Date &amp; Time Modifiers</h3>
+					<p>What is the first Monday of next year?</p>
+					<pre><code contenteditable class="JavaScript">sqlite> SELECT datetime('now', '12 months', 'start of year',
+   ...> 'weekday 1');
+2015-01-05 00:00:00
+</code></pre>
+				</section>
+
+				<section>
+					<h3>Let's Develop It!</h3>
+					<p>Write SQL queries to answer the following questions about the Chinook data.</p>
+					<ul>
+						<li>If you bought one copy of every track, how much would you spend?</li>
+						<li>What is the average track price in our store?</li>
+						<li>How many genres of music are represented by tracks sold in our store?</li>
+						<li>How many artists have albums in our store?</li>
+					</ul>
+				</section>
+
+				<section>
+					<h3>Solutions</h3>
+					<ul>
+						<li>If you bought one copy of every track, how much would you spend?<br>
+						<pre><code contenteditable class="JavaScript">sqlite> SELECT sum(UnitPrice) from Track;
+3680.969999999704
+	</code></pre>
+					</li>
+						<li>What is the average track price in our store?<br>
+						<pre><code contenteditable class="JavaScript">sqlite> SELECT avg(UnitPrice) as 'Average Price' FROM Track;
+1.0508050242648312
+	</code></pre></li>
+					</ul>
+				</section>
+
+				<section>
+					<h3>Solutions</h3>
+					<ul>
+						<li>How many genres of music are represented by tracks sold in our store?<br>
+						<pre><code contenteditable class="JavaScript">sqlite> SELECT count(DISTINCT GenreId) from Track;
+25
+	</code></pre></li>
+						<li>How many artists have albums in our store?<br>
+						<pre><code contenteditable class="JavaScript">sqlite> SELECT count(DISTINCT ArtistId) from Album;
+204
+	</code></pre></li>
+					</ul>
+					</section>
+
+					<section>
+						<h3>Advanced Topics</h3>
+						<h4>Indexes</h4>
+						<p>Indexes are a special lookup table that an RDBMS uses to speed up data retrieval.</p>
+						<p>We can think of an index in a database as being similar to an index in the back of a book.</p>
+						<pre><code contenteditable class="JavaScript">sqlite> CREATE INDEX salary_index ON COMPANY (salary);
+	</code></pre>
+						<p>You can list all of the indexes on a TableBy using the <em>.indices TABLE</em> command.
+						<pre><code contenteditable class="JavaScript">sqlite> .indices Employee
+IFK_EmployeeReportsTo
+IPK_Employee
+	</code></pre>
+					</section>
+
+					<section>
+						<h3>Advanced Topics</h3>
+						<h4>Views</h4>
+						<p>Views are a specific look at data from one or more tables.</p>
+						<p>You can think of a view as the results of a query that can be accessed as a virtual table</p>
+						<p>A view is not a part of the physical schema of a database, and
+							its values are computed dynamically from the data in the database.</p>
+						<pre><code contenteditable class="JavaScript">sqlite> CREATE VIEW cheap_tracks AS SELECT * FROM Track WHERE UnitPrice <= 0.99;
+	</code></pre>
+					</section>
+
+					<section>
+						<h3>Advanced Topics</h3>
+						<h4>Triggers</h4>
+						<p>Triggers are database operations that are automatically performed when a specific
+						event occurs in your database.</p>
+						<p>Among other things, triggers often used to insert records into log tables when changes are made to data.</p>
+						<p>Creating triggers is beyond the scope of this class, but know they exist.</p>
+					</section>
+
+					<section>
+						<h3>Advanced Topics</h3>
+						<h4>Transactions</h4>
+						<p>A transaction is an atomic unit of database operations.</p>
+						<p>The effect of a transaction is that either all of the SQL statements
+							in a transaction are committed to the database, or all of them are rolled back (no changes).</p>
+						<p>A transaction begins with the BEGIN TRANSACTION statement, followed by COMMIT or ROLLBACK.</p>
+						<p>Transactions are beyond the scope of this class, but good to learn if you are dealing with
+							a group of changes that are "all or nothing".</p>
+					</section>
+
+					<section>
+						<h3>Resources</h3>
+						<ul>
+							<li><a href="http://sql.learncodethehardway.org/">Learn SQL the Hard Way</a></li>
+							<li>Jeff Atwood's blog post: <a href="http://blog.codinghorror.com/a-visual-explanation-of-sql-joins/">
+								A Visual Explanation of SQL Joins</a>, from which the join explanations in this class were borrowed.</li>
+							<li><a href="http://mivuletech.wordpress.com/2011/03/22/an-overview-of-relational-algebra-operators-and-their-sql-translations/">
+								An Overview of Relational Algebra Operators and Their SQL Translations</a></li>
+						</ul>
+					</section>
+
+        <section>
+          <h2>Questions?</h2>
+          <div style = "font-size:1200%; height:100%; margin-top:40%" class ="blue">?
+            <div class ="clear"></div></div>
+        </section>
+			</div>
+  		<footer>
+        <div class="copyright">
+          Intro to Databases -- Girl Develop It --
+          <a rel="license" href="http://creativecommons.org/licenses/by-nc/3.0/deed.en_US"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc/3.0/80x15.png" /></a>
+        </div>
+      </footer>
+		</div>
+
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.min.js"></script>
+
+		<script>
+
+			// Full list of configuration options available here:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: false,
+				history: true,
+
+				theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+				transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/none
+
+				// Optional libraries used to extend on reveal.js
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/showdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+					{ src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+				]
+			});
+
+		</script>
+
+	</body>
+</html>

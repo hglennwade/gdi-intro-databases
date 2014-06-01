@@ -1,0 +1,520 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>Intro to Databases - Girl Develop It</title>
+
+		<meta name="description" content="Introduction to Databases.
+
+    The course is meant to be taught in four two-hour workshops.">
+		<meta name="author" content="Girl Develop It">
+
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/gdicool.css" id="theme">
+
+		<!-- For syntax highlighting -->
+		<!-- light editor--><link rel="stylesheet" href="lib/css/light.css">
+		<!-- dark editor<link rel="stylesheet" href="lib/css/dark.css">-->
+
+		<!-- If use the PDF print sheet so students can print slides-->
+
+		<link rel="stylesheet" href="css/print/pdf.css" type="text/css" media="print">
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+				<section>
+					<h3>Introduction to Databases</h3>
+					<h4>Class 2 - Intro to SQL</h4>
+                    <img src="images/gdi_logo_badge.png" alt="" />
+				</section>
+
+				<!-- Welcome-->
+				<section>
+					<h3>Welcome!</h3>
+					<div class = "left-align">
+					<p>Girl Develop It is here to provide affordable and accessible programs to learn software through mentorship and hands-on instruction.</p>
+					<p class ="green">Some "rules"</p>
+					<ul>
+						<li>We are here for you!</li>
+						<li>Every question is important</li>
+						<li>Help each other</li>
+						<li>Have fun</li>
+					</ul>
+					</div>
+				</section>
+
+		    <section>
+					<h3>Intro to SQL</h3>
+					<ul>
+						<li>SQL - Structured Query Language</li>
+						<li>Special purpose language for managing data in a RDBMS</li>
+						<li>First introduced by Oracle in 1979</li>
+						<li>SQL is an ANSI and ISO standard. While not perfectly portable,
+						syntax across systems is mostly the same.</li>
+						<li>SQL is great to know, because it is <em>everywhere</em>.
+					</ul>
+        </section>
+
+				<section>
+					<h3>Why SQLite?</h3>
+					<ul>
+						<li>Flexible relational database that works with a huge range of software and hardware</li>
+						<li>Embeddable database with small footprint, often used for development</li>
+						<li>Supported by languages such as</li>
+						<li><ul>
+							<li>C</li>
+							<li>Java</li>
+							<li>Perl</li>
+							<li>Ruby</li>
+							<li>Python</li>
+							<li>Objective C</li>
+							<li>...and more!</li>
+						</ul></li>
+					</ul>
+				</section>
+
+				<section>
+					<h3>SQLite - Distinctive Features</h3>
+					<ul>
+						<li>Zero-Configuration</li>
+						<li>Serverless - no separate server process is required. SQLite reads and writes direclty to disk.</li>
+						<li>Single, compact database file</li>
+						<li>Stable cross-platform database file</li>
+					</ul>
+				</section>
+
+				<section>
+					<h3>SQLite - What's it good for?</h3>
+					<ul>
+						<li>Desktop applications</li>
+						<li>Mobile apps</li>
+						<li>Low traffic websites</li>
+						<li>Ad hoc command line data analysis</li>
+						<li>Stand-in for enterprise RDBMS during testing or demos</li>
+					</ul>
+					<br><br>
+					<h4>What's it not good for?</h4>
+					<ul>
+						<li>Client/Server applications</li>
+						<li>High volume websites</li>
+						<li>Very large datasets</li>
+						<li>High concurrency (simultaneous readers)</li>
+					</ul>
+				</section>
+
+				<section>
+					<h3>Installing SQLite3</h3>
+					<h4>Windows</h4>
+					<ul>
+						<li><a href="http://git-scm.com/downloads">Install Git</a> (Windows only)</li>
+						<ul><li>We will be using Git Bash instead of the Command Line</li></ul>
+						<li><a href="http://www.sqlite.org/download.html">Install SQLite3</a></li>
+						<li>Download “sqlite-shell” and “sqlite-dll” archive files</li>
+						<li>Unpack sqlite-dll files and move them to C:\WINDOWS\system32 folder</li>
+						<li>Launch sqlite-shell</li>
+					</ul>
+				</section>
+
+				<section>
+					<h3>Installing SQLite3</h3>
+					<h4>Mac</h4>
+					<p>Open Terminal and see if you have Homebrew installed</p>
+					<pre><code contenteditable class="JavaScript">$ brew -v
+Homebrew 0.9.5</code></pre>
+					<p>If you do not see "Homebrew" and a version number, copy and paste this line into Terminal:</p>
+					<pre><code contenteditable class="JavaScript">ruby -e "$(curl -fsSL https://raw.github.com/Homebrew/homebrew/go/install)"</code></pre>
+					<p>Install SQLite3 using Homebrew</p>
+					<pre><code contenteditable class="JavaScript">brew install sqlite3</code></pre>
+				</section>
+
+				<section>
+          <h3>Intro to Terminal</h3>
+          <p>Mac & Linux users: Open <strong>Terminal</strong></p>
+          <p>Windows users: Open <strong>Git-Bash</strong></p>
+          <br >
+          <p>We will not be using Windows "cmd" program, as it uses a different syntax than *NIX systems.</p>
+        </section>
+
+				 <section>
+          <h3>Terminal Cheatsheet</h3>
+          <table style="font-size: 20px; line-height: 1.4em;">
+            <tr>
+              <td>.</td>
+              <td>the current directory- ex: "touch ./wow.txt"</td>
+            </tr>
+            <tr>
+              <td>..</td>
+              <td>the parent of current directory - ex: "cd ../RubyParty"</td>
+            </tr>
+            <tr>
+              <td>~</td>
+              <td>the root directory- ex: "cd ~/Pictures"</td>
+            </tr>
+            <tr>
+              <td>cd [location]</td>
+              <td>"change directory" to [location]</td>
+            </tr>
+            <tr>
+              <td>pwd</td>
+              <td>"present working directory" - where am I?</td>
+            </tr>
+            <tr>
+              <td>ls -al</td>
+              <td>"list all" of the contents of current directory, including invisible ones</td>
+            </tr>
+            <tr>
+              <td>touch [filename.extension]</td>
+              <td>create a file called filename.extension in the current directory</td>
+            </tr>
+            <tr>
+              <td>mkdir [directoryname]</td>
+              <td>create a directory called directoryname in the current directory</td>
+            </tr>
+            <tr>
+              <td>rm [filename]</td>
+              <td>"remove" (delete) the file called filename</td>
+            </tr>
+            <tr>
+              <td>rm -rf [directoryname]</td>
+              <td>"remove recursively with force" the directory called directoryname</td>
+            </tr>
+            <tr>
+              <td>clear OR cmd+k</td>
+              <td>clear the terminal screen</td>
+            </tr>
+            <tr>
+              <td>help</td>
+              <td>lists all possible commands</td>
+            </tr>
+            <tr>
+              <td>man [command]</td>
+              <td>displays the manual for command</td>
+            </tr>
+          </table>
+        </section>
+
+				<section>
+					<h3>Let's Develop It!</h3>
+        	<p>Working in the terminal, create a directory called gdi_db in the location of your choosing (Desktop? Documents? Somewhere you'll be able to find it again!).</p>
+        </section>
+
+
+				<section>
+					<h3>Let's Develop It! (continued)</h3>
+					<h4>Testing our SQLite3 Installation (Mac)</h4>
+					<p>Run "sqlite3" in Terminal</p>
+					<pre><code>$ sqlite3
+SQLite version 3.7.8 2011-09-19 14:49:19
+Enter ".help" for instructions
+Enter SQL statements terminated with a ";"
+sqlite></pre></code>
+					<p>If successful, you will see the version info and the sqlite prompt</p>
+					<h4>Testing our SQLite3 Installation (Windows)</h4>
+					<p>Open sqlite-shell.</p>
+				</section>
+
+				<section>
+					<h3>SQLite3 Help</h3>
+					<p>Enter .help for instructions</p>
+					<p>We will go through many of these. For now, note that you can use .exit or .quit to exit the Sqlite prompt</p>
+				</section>
+
+				<section>
+					<h3>The Chinook Database</h3>
+					<ul>
+						<li><a href="http://chinookdatabase.codeplex.com/">Download the Chinook Database files</a></li>
+						<li>Open source sample database</li>
+						<li>Available for many popular RDBMS, including SQL Server, Oracle, MySQL, PostgreSQL, and SQLite</li>
+						<li>Data model for a digital media store</li>
+					</ul>
+				</section>
+
+				<section>
+					<h3>The Chinook Database</h3>
+					<img src="images/chinookschema.png">
+				</section>
+
+				<section>
+					<h3>Installing the Chinook Database</h3>
+					<ul>
+						<li>Move the zipped file you downloaded to the folder you just created</li>
+						<li>Unzip ChinookDatabase1.4_CompleteVersion.zip</li>
+						<li>Execute the following command to open the Chinook_Sqlite.sqlite database</li>
+					</ul>
+					<h4>Mac:</h4>
+					<pre><code contenteditable class="JavaScript">sqlite3 Chinook_Sqlite.sqlite</code></pre>
+					<h4>Windows:</h4>
+					<pre><code contenteditable class="JavaScript">.open C:/Downloads/ChinookDatabase1.4_CompleteVersion/Chinook_Sqlite.sqlite</code></pre>
+				</section>
+
+				<section>
+					<h3>Database Schemas</h3>
+					<ul>
+					<li>A structure described in a formal language</li>
+					<li>Acts as a blueprint for how the database is constructed</li>
+					<li>In a relational database, the schema defines:
+						<ul>
+							<li>tables</li>
+							<li>fields</li>
+							<li>relationships</li>
+							<li>views</li>
+							<li>indexes</li>
+							<li>functions</li>
+							<li>and other elements</li>
+						</ul>
+					</li>
+				</section>
+
+				<section>
+					<h3>Tables</h3>
+					<p>In a relational database, a table is an organized set of data using columns and rows.</p>
+					<img src="images/table.gif"/>
+					<p>You may sometimes hear a table referred to as a "relation".</p>
+				</section>
+
+				<section>
+					<h3>View Tables</h3>
+					<p>Let's check out the tables included in the Chinook database:</p>
+					<pre><code contenteditable class="JavaScript">sqlite> .tables
+Album          Employee       InvoiceLine    PlaylistTrack
+Artist         Genre          MediaType      Track
+Customer       Invoice        Playlist
+sqlite>
+</code></pre>
+				</section>
+
+				<section>
+					<h3>Table Schemas</h3>
+					<p>We can also check out the schema for the tables.</p>
+					<pre><code contenteditable class="JavaScript">sqlite> .schema Artist
+CREATE TABLE [Artist]
+(
+    [ArtistId] INTEGER  NOT NULL,
+    [Name] NVARCHAR(120),
+    CONSTRAINT [PK_Artist] PRIMARY KEY  ([ArtistId])
+);
+CREATE UNIQUE INDEX [IPK_Artist] ON [Artist]([ArtistId]);
+</code></pre>
+					<p>What are the columns in the Artist table?</p>
+				</section>
+
+				<section>
+					<h3>GUI Tools</h3>
+						<p>Many GUI tools exist for SQLite.<p>
+						<p>Let's download <a href="https://addons.mozilla.org/en-US/firefox/addon/sqlite-manager/">SQLite Manager</a>, an add-on for Firefox</p>
+						<p>(First install Firefox, if you do not have it already.)</p>
+						<img src="images/SQLiteManager.png"/>
+				</section>
+
+				<section>
+					<h3>Chinook Database in SQLite Manager</h3>
+					<ul>
+						<li>Open SQLite Manager in Firefox Tools</li>
+						<li>Database -> Connect Database</li>
+						<li>Navigate to Chinook_Sqlite.sqlite in your directory</li>
+						<li>Click "Open"</li>
+						<img src="images/SQLiteManagerPlugin.png"/>
+					</ul>
+				</section>
+
+				<section>
+					<h3>Let's Develop It!</h3>
+					<p>Spend a few minutes exploring the SQLite Manager<p>
+					<ul>
+						<li>Pair up with your neighbor and discuss what you find.</li>
+						<li>View a few tables.</li>
+						<li>What do you find in the Structure tab? What are some different data types you can find?</li>
+						<li>How about the Browse and Search tab?</li>
+						<li>We can ignore Execute SQL and DB Settings for now. Just focus on what we see in the data.</li>
+					</ul>
+				</section>
+
+				<section>
+					<h3>The SELECT Statement</h3>
+					<ul>
+						<li>We use the SELECT command to show data from a database</li>
+						<li>The output from a SELECT statement is always a grid of rows and columns.</li>
+						<li>The most simple SELECT statement retrieves all values from a single table</li>
+					</ul>
+					<pre><code contenteditable class="JavaScript">sqlite> SELECT * FROM Album;
+1|For Those About To Rock We Salute You|1
+2|Balls to the Wall|2
+3|Restless and Wild|2
+4|Let There Be Rock|1
+5|Big Ones|3
+</code></pre>
+					<p>This will return all of the results from the table, which could be expensive.</p>
+				</section>
+
+				<section>
+					<h3>SELECT .. WHERE</h3>
+					<p>You can have only a subset of rows returned by using the WHERE clause</p>
+					<pre><code contenteditable class="JavaScript">sqlite> SELECT *
+   ...> FROM Customer
+   ...> WHERE FirstName = "Mark";
+14|Mark|Philips|Telus|8210 111 ST NW|Edmonton|AB|Canada|T6G 2C7|+1 (780) 434-4554|+1 (780) 434-5565|mphilips12@shaw.ca|5
+55|Mark|Taylor||421 Bourke Street|Sidney|NSW|Australia|2010|+61 (02) 9332 3633||mark.taylor@yahoo.au|4
+sqlite>
+</code></pre>
+					<p>Alternatively, the SELECT .. WHERE statement can be made on one line:</p>
+					<pre><code contenteditable class="JavaScript">SELECT * FROM Customer WHERE FirstName = "Mark";</code></pre>
+				</section>
+
+				<section>
+					<h3>WHERE Clause Operators</h3>
+					<table style="font-size: 20px; line-height: 1.4em;">
+						<tr>
+							<td>Operator</td>
+							<td>Description</td>
+						</tr>
+						<tr>
+							<td>=</td>
+							<td>Equal</td>
+						</tr>
+						<tr>
+							<td>&lt;&gt;</td>
+							<td>Not equal. <em>Note:</em> In some versions of SQL, this may be written as !=</td>
+						</tr>
+						<tr>
+							<td>&gt;</td>
+							<td>Greater than</td>
+						</tr>
+						<tr>
+							<td>&lt;</td>
+							<td>Less than</td>
+						</tr>
+						<tr>
+							<td>&gt;=</td>
+							<td>Greater than or equal</td>
+						</tr>
+						<tr>
+							<td>&lt;=</td>
+							<td>Less than or equal</td>
+						</tr>
+						<tr>
+							<td>BETWEEN</td>
+							<td>Between an inclusive range</td>
+						</tr>
+						<tr>
+							<td>LIKE</td>
+							<td>Search for a pattern</td>
+						</tr>
+						<tr>
+							<td>IN</td>
+							<td>To specify multipl possible values for a column</td>
+						</tr>
+					</table>
+				</section>
+
+				<section>
+					<h3>Not Equal</h3>
+					<pre><code contenteditable class="JavaScript">SELECT * FROM Customer WHERE FirstName <> "Mark";
+</code></pre>
+				</section>
+
+				<section>
+					<h3>Greater Than</h3>
+					<pre><code contenteditable class="JavaScript">SELECT * FROM Employee WHERE BirthDate > "1970-01-01";
+</code></pre>
+				</section>
+
+				<section>
+					<h3>Less Than</h3>
+					<pre><code contenteditable class="JavaScript">SELECT * FROM Employee WHERE BirthDate < "1970-01-01";
+</code></pre>
+				</section>
+
+				<section>
+					<h3>BETWEEN</h3>
+					<pre><code contenteditable class="JavaScript">SELECT * FROM Employee WHERE BirthDate BETWEEN "1965-01-01" AND "1971-01-01";
+</code></pre>
+				</section>
+
+				<section>
+					<h3>LIKE</h3>
+					<pre><code contenteditable class="JavaScript">SELECT * FROM Track WHERE Name LIKE "%Love%";
+</code></pre>
+				</section>
+
+				<section>
+					<h3>IN</h3>
+					<pre><code contenteditable class="JavaScript">SELECT * FROM Track WHERE MediaTypeId IN (1,2);
+</code></pre>
+				</section>
+
+				<section>
+					<h3>Let's Develop It!</h3>
+					<ul>
+						<li>Spend the rest of class writing SELECT statements with WHERE clauses</li>
+						<li>Use SQLite Manager to get ideas of how the data is structured, and what you might query</li>
+						<li>Feel free to work with a neighbor!</li>
+					</ul>
+				</section>
+
+				<section>
+						<h3>Resources</h3>
+								<ul>
+										<li><a href="http://www.sqlite.org/whentouse.html">When to Use SQLite</a> - A list of good uses for SQLite, as well as situations where another RDMBS would be better.</li>
+										<li>More about <a href="http://www.tutorialspoint.com/sqlite/sqlite_where_clause.htm">SQLite WHERE clauses</a></li>
+							</ul>
+				</section>
+
+        <section>
+          <h2>Questions?</h2>
+          <div style = "font-size:1200%; height:100%; margin-top:40%" class ="blue">?
+            <div class ="clear"></div></div>
+        </section>
+			</div>
+  		<footer>
+        <div class="copyright">
+          Intro to Databases -- Girl Develop It --
+          <a rel="license" href="http://creativecommons.org/licenses/by-nc/3.0/deed.en_US"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc/3.0/80x15.png" /></a>
+        </div>
+      </footer>
+		</div>
+
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.min.js"></script>
+
+		<script>
+
+			// Full list of configuration options available here:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: false,
+				history: true,
+
+				theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+				transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/none
+
+				// Optional libraries used to extend on reveal.js
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/showdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+					{ src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+				]
+			});
+
+		</script>
+
+	</body>
+</html>

@@ -1,0 +1,428 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>Intro to Databases - Girl Develop It</title>
+
+		<meta name="description" content="Introduction to Databases.
+
+    The course is meant to be taught in four two-hour workshops.">
+		<meta name="author" content="Girl Develop It">
+
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/gdicool.css" id="theme">
+
+		<!-- For syntax highlighting -->
+		<!-- light editor--><link rel="stylesheet" href="lib/css/light.css">
+		<!-- dark editor<link rel="stylesheet" href="lib/css/dark.css">-->
+
+		<!-- If use the PDF print sheet so students can print slides-->
+
+		<link rel="stylesheet" href="css/print/pdf.css" type="text/css" media="print">
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+				<section>
+					<h3>Introduction to Databases</h3>
+					<h4>Class 3 - More SQL</h4>
+                    <img src="images/gdi_logo_badge.png" alt="" />
+				</section>
+
+				<!-- Welcome-->
+				<section>
+					<h3>Welcome!</h3>
+					<div class = "left-align">
+					<p>Girl Develop It is here to provide affordable and accessible programs to learn software through mentorship and hands-on instruction.</p>
+					<p class ="green">Some "rules"</p>
+					<ul>
+						<li>We are here for you!</li>
+						<li>Every question is important</li>
+						<li>Help each other</li>
+						<li>Have fun</li>
+					</ul>
+					</div>
+				</section>
+
+		    <section>
+					<h3>Overview</h3>
+					<p>Today, we will learn:</p>
+					<ul>
+						<li>How to create a database</li>
+						<li>How to create, alter and drop tables</li>
+						<li>A little about column constraints</li>
+						<li>How to insert, update and delete records</li>
+					</ul>
+        </section>
+
+				<section>
+					<h3>Create Database</h3>
+					<p>From Windows Command Line Tool:</p>
+					<pre><code contenteditable class="JavaScript">sqlite> .open test.db
+</code></pre>
+					<p>From Mac Terminal:</p>
+					<pre><code contenteditable class="JavaScript">$ sqlite3 test.db
+</code></pre>
+					<p>In each case, SQLite3 attempts to open a database called "test.db", which does not exists. Therefore, it is created.</p>
+				</section>
+
+				<section>
+					<h3>Create Tables</h3>
+					<p>The CREATE statement is used to create tables. It is also used to create indexes, views and triggers.</p>
+					<p>To create a table, we give a name to a table and to its columns. Each column can have one of these data types:</p>
+					<ul>
+						<li>NULL - The value is a NULL value</li>
+						<li>INTEGER - a signed integer</li>
+						<li>REAL - a floating point value</li>
+						<li>TEXT - a text string</li>
+						<li>BLOB - a blob of data</li>
+					</ul>
+					<pre><code contenteditable class="JavaScript">sqlite> CREATE TABLE Testing(Id INTEGER);
+sqlite> .schema Testing
+sqlite> CREATE TABLE Testing(Id INTEGER);
+</code></pre>
+				</section>
+
+				<section>
+					<h3>Drop Tables</h3>
+					<p>The DROP statement is used to delete a table from a database.</p>
+					<pre><code contenteditable class="JavaScript">sqlite> DROP TABLE Testing;
+sqlite> .tables
+</code></pre>
+					<a href="http://xkcd.com/327/"><img src="images/exploits_of_a_mom.png"/></a>
+				</section>
+
+				<section>
+					<h3>Drop Tables</h3>
+					<p>If you are trying to drop a table that does not exist, you will get an error. We can avoid this with the "IF EXISTS" clause.</p>
+					<pre><code contenteditable class="JavaScript">sqlite> DROP TABLE IF EXISTS Testing;
+sqlite> .tables
+</code></pre>
+				</section>
+
+				<section>
+					<h3>Alter Tables</h3>
+					<ul>
+						<li>Rename a table</li>
+						<li>Add a column to a table</li>
+						<li>In SQLite, ALTER cannot:
+							<ul>
+								<li>Rename a column</li>
+								<li>Remove a column</li>
+								<li>Add or remove constraints from a table</li>
+							</ul></li>
+					</ul>
+					<pre><code contenteditable class="JavaScript">sqlite> CREATE TABLE Names(Id INTEGER, Name TEXT);
+sqlite> .tables
+sqlite> ALTER TABLE Names RENAME TO NamesOfFriends;
+sqlite> .schema NamesOfFriends
+sqlite> ALTER TABLE NamesOfFriends ADD COLUMN Email TEXT;
+sqlite> .schema NamesOfFriends
+</code></pre>
+				</section>
+
+				<section>
+					<h3>What if Alter isn't good enough?</h3>
+					<p>Say we really do need to rename or remove a column. What do we do?</p>
+					<ul>
+						<li>Rename the old table</li>
+						<li>Create the new table, based on the old table but with the updated column</li>
+						<li>Copy the contents across from the original table</li>
+						<li>Drop the old table</li>
+					</ul>
+					<p>The .dump Table command in SQLite will output the instructions for recreating a table and its contents.</p>
+					<pre><code contenteditable class="JavaScript">sqlite> .dump Media
+</code></pre>
+				</section>
+
+				<section>
+					<h3>Primary and Foreign Keys</h3>
+					<pre><code contenteditable class="JavaScript">sqlite> .schema InvoiceLine
+CREATE TABLE [InvoiceLine]
+(
+    [InvoiceLineId] INTEGER  NOT NULL,
+    [InvoiceId] INTEGER  NOT NULL,
+    [TrackId] INTEGER  NOT NULL,
+    [UnitPrice] NUMERIC(10,2)  NOT NULL,
+    [Quantity] INTEGER  NOT NULL,
+    CONSTRAINT [PK_InvoiceLine] PRIMARY KEY  ([InvoiceLineId]),
+    FOREIGN KEY ([InvoiceId]) REFERENCES [Invoice] ([InvoiceId])
+		ON DELETE NO ACTION ON UPDATE NO ACTION,
+    FOREIGN KEY ([TrackId]) REFERENCES [Track] ([TrackId])
+		ON DELETE NO ACTION ON UPDATE NO ACTION
+);
+</code></pre>
+<p>We will ignore indexes in this class and discuss them next week.</p>
+				</section>
+
+				<section>
+					<h3>Constraints</h3>
+					<p>Constraints are placed on columns. They limit the data that can be inserted into tables.<p>
+					<ul>
+						<li>NOT NULL</li>
+						<li>UNIQUE</li>
+						<li>PRIMARY KEY</li>
+						<li>FOREIGN KEY</li>
+						<li>CHECK</li>
+						<li>DEFAULT</li>
+					</ul>
+				</section>
+
+				<section>
+					<h3>NOT NULL CONSTRAINT</h3>
+					<p>A column with a NOT NULL constraint can't have NULL values.</p>
+					<pre><code contenteditable class="JavaScript">sqlite> CREATE TABLE People(Id INTEGER, LastName TEXT NOT NULL,
+	...> FirstName TEXT NOT NULL, City TEXT);
+sqlite> INSERT INTO People VALUES(1, 'Hanks', 'Robert', 'New York');
+sqlite> INSERT INTO People VALUES(2, NULL, 'Marianne', 'Chicago');
+Error: People.LastName may not be NULL
+</code></pre>
+				</section>
+
+				<section>
+					<h3>UNIQUE Constraint</h3>
+					<p>The UNIQUE constraint ensures that all data in a column are unique.</p>
+					<pre><code contenteditable class="JavaScript">sqlite> CREATE TABLE Brands(Id INTEGER, BrandName TEXT UNIQUE);
+sqlite> INSERT INTO Brands VALUES(1, 'Coca Cola');
+sqlite> INSERT INTO Brands VALUES(2, 'Pepsi');
+sqlite> INSERT INTO Brands VALUES(3, 'Pepsi');
+Error: column BrandName is not unique
+</code></pre>
+				<p>Note: the PRIMARY KEY constraint automatically has a UNIQUE constraint defined on it.</p>
+				</section>
+
+				<section>
+					<h3>Primary Key Constraint</h3>
+					<ul>
+						<li>Uniquely identifies each row in a database table.</li>
+						<li>There can be additional UNIQUE columns, but only one PRIMARY KEY.</li>
+						<li>We use prmary keys as unique IDs to refer to table rows.</li>
+						<li>Primary keys <em>become</em> foreign keys when creating relations among tables.</li>
+					</ul>
+					<p><em>Note: Due to an oversight in SQLite, primary keys can be NULL in SQLite. This is not true for other relational databases.</em></p>
+				</section>
+
+				<section>
+					<h3>Foreign Key Constraint</h3>
+					<p>A FOREIGN KEY in one table points to a PRIMARY KEY in another table. This acts as a referential constraint between the two tables.</p>
+					<pre><code contenteditable class="JavaScript">sqlite> CREATE TABLE Authors(AuthorId INTEGER PRIMARY KEY, Name TEXT);
+sqlite> CREATE TABLE Books(BookId INTEGER PRIMARY KEY, Title TEXT, AuthorId INTEGER,
+	 ...> FOREIGN KEY(AuthorId) REFERENCES Authors(AuthorId));
+</code></pre>
+					<p>In SQLite, foreign keys are not enforced by default. Configuration is outside the scope of this class, but other databases will enforce by default.</p>
+				</section>
+
+				<section>
+					<h3>CHECK Constraint</h3>
+					<p>A CHECK clause imposes a validation on the value that is being added or updated to a column.</p>
+					<pre><code contenteditable class="JavaScript">sqlite> CREATE TABLE Orders(Id INTEGER PRIMARY KEY, OrderPrice INTEGER CHECK(OrderPrice>0), Customer TEXT);
+sqlite> INSERT INTO Orders(OrderPrice, Customer) VALUES(-10, 'Johnson');
+Error: constraint failed</code></pre>
+					<p>If we try to insert an order wtih a negative price, we get an error.</p>
+				</section>
+
+				<section>
+					<h3>DEFAULT Constraint</h3>
+					<p>The DEFAULT constraint inserts a default value in a column if no value is provided.</p>
+					<pre><code contenteditable class="JavaScript">sqlite> CREATE TABLE Hotels(Id INTEGER PRIMARY KEY, Name TEXT,
+	...> City TEXT DEFAULT 'not available');
+sqlite> INSERT INTO Hotels(Name, City) VALUES('Kyjev', 'Bratislava');
+sqlite> INSERT INTO Hotels(Name) VALUES('Slovan');
+sqlite> .width 3 8 17
+sqlite> SELECT * FROM Hotels;
+Id   Name      City
+---  --------  -----------------
+1    Kyjev     Bratislava
+2    Slovan    not available </code></pre>
+					<p>In the first statement, we provided values for both name and city. In the second statement, we only provided the hotel name.</p>
+				</section>
+
+				<section>
+					<h3>Let's Develop It!</h3>
+					<p>Create your own version of the Chinook database. Use the diagram below as a guide.</p>
+					<img style="width:60%" src="images/chinookschema.png">
+				</section>
+
+				<section>
+					<h3>Let's Develop It!</h3>
+					<p>Hint: Order matters due to foreign key constraints.</p>
+					<ul>
+						<li>Artist</li>
+						<li>Album</li>
+						<li>Employee</li>
+						<li>Customer</li>
+						<li>Genre</li>
+						<li>Invoice</li>
+						<li>MediaType</li>
+						<li>Track</li>
+						<li>InvoiceLine</li>
+						<li>Playlist</li>
+						<li>PlaylistTrack</li>
+					</ul>
+				</section>
+
+				<section>
+					<h3>Solution</h3>
+					<p>The solution can be found by executing the .schema command on each table for the Chinook database.</p>
+					<p>Alternatively, you can download this <a href="create_tables.sql">list of CREATE statements.</a></p>
+				</section>
+
+				<section>
+					<h3>Inserting Rows</h3>
+					<p>The INSERT statement is used to insert data into tables. Let's create a new table as an example.</p>
+					<pre><code contenteditable class="JavaScript">sqlite> CREATE TABLE Books(Id INTEGER PRIMARY KEY, Title TEXT, Author TEXT, ISBN TEXT DEFAULT 'not available');
+</code></pre>
+					<p>Now, we will use the INSERT statement to create a row with all the values we want to store.</p>
+					<pre><code contenteditable class="JavaScript">sqlite> INSERT INTO Books(Id, Title, Author, ISBN)
+   ...> VALUES(1, 'War and Peace', 'Leo Tolstoy', '978-0345472403');
+</code></pre>
+					<p>We omitted the Id column, as it was defined as an INTEGER PRIMARY KEY. In SQLite, this will autoincrement for us.</p>
+				</section>
+
+				<section>
+					<h3>Inserting Rows</h3>
+					<p>Let's add one more:</p>
+					<pre><code contenteditable class="JavaScript">sqlite> INSERT INTO Books(Title, Author, ISBN)
+   ...> VALUES('The Brothers Karamazov', 'Fyodor Dostoyevsky', '978-0486437910');
+</code></pre>
+				  <p>And we can use a SELECT statement to view what we inserted.</p>
+					<pre><code contenteditable class="JavaScript">sqlite> SELECT * FROM Books;
+Id|Title|Author|ISBN
+1|War and Peace|Leo Tolstoy|978-0345472403
+2|The Brothers Karamazov|Fyodor Dostoyevsky|978-0486437910
+</code></pre>
+				</section>
+
+				<section>
+					<h3>Inserting Rows</h3>
+					<p>We can insert a record without specifying column names.</p>
+					<pre><code contenteditable class="JavaScript">sqlite> INSERT INTO Books VALUES(3, 'Crime and Punishment', 'Fyodor Dostoevsky',
+   ...> '978-1840224306');
+</code></pre>
+					<p>In this case, we must supply all values.</p>
+				</section>
+
+				<section>
+					<h3>Null Values</h3>
+					<p>By default, SQLite will show empty strings for NULL values. We can change this behavior.</p>
+					<pre><code contenteditable class="JavaScript">sqlite> .nullvalue NULL
+</code></pre>
+				</section>
+
+				<section>
+					<h3>Omitting Columns</h3>
+					<p>We can also insert records that are missing values for some columns.</p>
+					<pre><code contenteditable class="JavaScript">sqlite> INSERT INTO Books(Id, Title) VALUES(4, 'Paradise Lost');
+</code></pre>
+					<p>Note the difference between the NULL value for the unspecified column and the default value of "not available" for the description.</p>
+					<pre><code contenteditable class="JavaScript">sqlite> SELECT * FROM Books WHERE Id=4;
+Id|Title|Author|ISBN
+4|Paradise Lost|NULL|not available
+</code></pre>
+				</section>
+
+				<section>
+					<h3>Updating Records</h3>
+					<p>Let's say we want to add the missing information for "Paradise Lost".</p>
+					<pre><code contenteditable class="JavaScript">sqlite> INSERT INTO Books VALUES(4, 'Paradise Lost', 'John Milton', '978-0486442877');
+Error: PRIMARY KEY must be unique
+sqlite> INSERT OR REPLACE INTO Books VALUES(4, 'Paradise Lost', 'John Milton',
+   ...> '978-0486442877');
+</code></pre>
+					<p>More commonly, you would use an UPDATE statement.</p>
+				</section>
+
+				<section>
+					<h3>Updating Records</h3>
+					<p>The UPDATE statement is used to change the value of columns in selected rows of a table.</p>
+					<p>Say we want to change "Leo Tolstoy" to "Lev Nikolayevich Tolstoy" in our Books table.</p>
+					<pre><code contenteditable class="JavaScript">sqlite> UPDATE Books SET Author='Lev Nikolayevich Tolstoy' WHERE Id=1;
+sqlite> SELECT * FROM Books WHERE Id=1;
+Id|Title|Author|ISBN
+1|War and Peace|Lev Nikolayevich Tolstoy|978-0345472403</code></pre>
+					<p>The row is correctly updated.</p>
+				</section>
+
+				<section>
+					<h3>Deleting Records</h3>
+					<p>The DELETE keyword is used to delete data from tables.<p>
+					<pre><code contenteditable class="JavaScript">sqlite> DELETE FROM Books WHERE Id=1;
+SELECT * FROM Books;
+Id|Title|Author|ISBN
+2|The Brothers Karamazov|Fyodor Dostoyevsky|978-0486437910
+3|Crime and Punishment|Fyodor Dostoevsky|978-1840224306
+4|Paradise Lost|NULL|not available</code></pre>
+					<p><em><strong>WARNING: Like the DROP statement, DELETE can be destructive. Mind your WHERE clause!</strong></em></p>
+				</section>
+
+				<section>
+					<h3>Deleting Records</h3>
+					<h4>Appetite for Destruction</h3>
+					<pre><code contenteditable class="JavaScript">sqlite> DELETE FROM Books;
+</code></pre>
+					<p>No WHERE clause means that this statement deletes all data in the table!</p>
+				</section>
+
+				<section>
+					<h3>Let's Develop It!</h3>
+					<p>Using the database you created in the first exercise, practice inserting, updating and deleting records.</p>
+				</section>
+
+        <section>
+          <h2>Questions?</h2>
+          <div style = "font-size:1200%; height:100%; margin-top:40%" class ="blue">?
+            <div class ="clear"></div></div>
+        </section>
+			</div>
+  		<footer>
+        <div class="copyright">
+          Intro to Databases -- Girl Develop It --
+          <a rel="license" href="http://creativecommons.org/licenses/by-nc/3.0/deed.en_US"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc/3.0/80x15.png" /></a>
+        </div>
+      </footer>
+		</div>
+
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.min.js"></script>
+
+		<script>
+
+			// Full list of configuration options available here:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: false,
+				history: true,
+
+				theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+				transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/none
+
+				// Optional libraries used to extend on reveal.js
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/showdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+					{ src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+				]
+			});
+
+		</script>
+
+	</body>
+</html>

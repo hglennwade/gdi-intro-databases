@@ -1,0 +1,410 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>Intro to Databases - Girl Develop It</title>
+
+		<meta name="description" content="This is the official Girl Develop It Core Intro Web Concepts course. Material was originally developed by Matt Torbin and Elise Wei.
+
+    The course is meant to be taught in a single two-hour workshop.">
+		<meta name="author" content="Girl Develop It">
+
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/gdicool.css" id="theme">
+
+		<!-- For syntax highlighting -->
+		<!-- light editor--><link rel="stylesheet" href="lib/css/light.css">
+		<!-- dark editor<link rel="stylesheet" href="lib/css/dark.css">-->
+
+		<!-- If use the PDF print sheet so students can print slides-->
+
+		<link rel="stylesheet" href="css/print/pdf.css" type="text/css" media="print">
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+				<section>
+					<h3>Introduction to Databases</h3>
+					<h4>Class 1 - Data Modeling</h4>
+                    <img src="images/gdi_logo_badge.png" alt="" />
+				</section>
+
+				<!-- Welcome-->
+				<section>
+					<h3>Welcome!</h3>
+					<div class = "left-align">
+					<p>Girl Develop It is here to provide affordable and accessible programs to learn software through mentorship and hands-on instruction.</p>
+					<p class ="green">Some "rules"</p>
+					<ul>
+						<li>We are here for you!</li>
+						<li>Every question is important</li>
+						<li>Help each other</li>
+						<li>Have fun</li>
+					</ul>
+					</div>
+				</section>
+
+				<section>
+					<h3>Welcome!</h3>
+					<div class = "left-align">
+					<p class = "blue">Tell us about yourself.</p>
+					<ul>
+						<li>Who are you?</li>
+						<li>What do you hope to get out of the class?</li>
+						<li>What is your favorite part about your day so far?</li>
+					</ul>
+					</div>
+				</section>
+
+		    <section>
+            <h3>What is data modeling?</h3>
+						<ul>
+							<li>First step in database design and object oriented programming</li>
+							<li>Goal is to create a conceptual model of how data relate to each other</li>
+							<li>Exploratory process that progresses from:</li>
+								<ul>
+									<li>Conceptual Models - high level domain models</li>
+									<li>Logical Data Models - describe logical entities and relationships</li>
+									<li>Physical Data Models - used to design internal database schemas</li>
+								</ul>
+						</ul>
+        </section>
+
+        <section>
+            <h3>Modeling Real Things</h3>
+            <img src="images/herby_model.png" width="900px">
+        </section>
+
+        <section>
+            <h3>Kinds of data</h3>
+
+            <ul>
+                <li>Strings (characters within quotes, "Hi my name is Liz.")</li>
+                <li>Numbers (numeral characters - 1, 3, 27, 49)</li>
+                <li>Boolean (true or false)</li>
+                <li>Arrays(Lists of anything ["Hello", 27, "Arugula"])</li>
+                <li>Objects (key-value pairs)</li>
+            </ul>
+            <h3>An object looks like this:</h3>
+            <pre><code contenteditable class="javascript">
+{
+"name" : "value",
+"property" : "value",
+"age" : "35",
+"weight" : "180",
+"favorite_foods" : ["Artichoke", "Alphalpha", "Anchovies"],
+"favorite_books" : [{"title": "Moby Dick", "author" : "Hermann Melville"}, {"title" : "Where the Wild Things Are", "author" : "Maurice Sendak"}]
+}
+                    </code></pre>
+        </section>
+
+        <section>
+            <h3>Data Comes in Hierarchies</h3>
+            <p>Often, data is "nested" in "hierarchies" of objects within objects.</p>
+            <img src="images/hierarchy.png" width="500px">
+        </section>
+
+        <section>
+            <h3>Methods of storing</h3>
+
+            <ul>
+                <li>Plain Text (.txt)</li>
+                <li>CSV (.csv)</li>
+                <li>JSON (JavaScript Object Notation)</li>
+                <li>Relational Database (SQL, Oracle)</li>
+                <li>Non-Relational Database (MongoDB, Cassandra, etc)</li>
+            </ul>
+        </section>
+
+        <section>
+            <h3>Structure</h3>
+						<pre><code contenteditable class="javascript">
+car = {
+"name": "Herby",
+"make": "BMW",
+"model": "Bug",
+"purpose": "Love",
+"engineType": "Back",
+"color": "Stripes",
+"year": "1970"
+}
+					  </code></pre>
+						<p>Might not be as helpful as...</p>
+						<pre><code contenteditable class="javascript">
+car = {
+"name": "Herby",
+"make": "BMW",
+"model": "Bug",
+"purposes": ["Love", "Driving around", "Saving people?"],
+"engine": {"location": "Back", "cylinders": 4, "fuel-injected": false, "loud": true},
+"description": {"paint_profile": "Stripes", "colors": ["black", "white", "silver"], "attitude": "sassy"},
+"year": "1970"
+}
+					</code></pre>
+        </section>
+
+        <section>
+            <h3>This matters a lot!</h3>
+            <p>Data can limit your capabilities, or expand them.</p>
+            <p>Grouping similar pieces of data together helps you stay organized, and helps the computer use it faster and easier. It also helps engineers program things more efficiently.</p>
+            <pre><code contenteditable class="javascript">
+if (car.engine.loud == true && car.description.attitude == "sassy") {
+console.log("I think Herby the love bug is comin' down the road!");
+}
+            </code></pre>
+        </section>
+
+        <section>
+            <h3>How are things the same?</h3>
+            <p>Let's try to model these books together.</p>
+            <img src="images/powerofhabit.png" style="float:left; width:30%"> <img src="images/hyperspacebook.jpg" style="float:right; padding-left:20px; width:40%" >
+            <p>What unique properties do they have? What properties do they share?</p>
+        </section>
+
+        <section>
+            <h3>How are things the same?</h3>
+                <p>What does it mean to be a book?</p>
+                <div style="float:left; width:45%; height:600px;">
+                    <pre><code contenteditable class="javascript">
+{
+title: "",
+author: "",
+length: "",
+ISBN: "",
+cover: "",
+language: "",
+customer_rating: "",
+tags: "",
+amazon_link: "http://www.amazon.com/The-Power-Habit-What-Business/dp/1400069289/ref=sr_1_1?ie=UTF8&qid=1355257104&sr=8-1&keywords=power+of+habit"
+}
+                    </code></pre></div>
+                    <div style="float:right; width:45%; height:600px;" >
+                        <pre><code contenteditable class="javascript">
+{
+title: "",
+author: "",
+length: "",
+ISBN: "",
+cover: "",
+language: "",
+customer_rating: "",
+tags: "",
+amazon_link: "http://www.amazon.com/Hyperspace-Scientific-Parallel-Universes-Dimension/dp/0195085140/ref=tmm_hrd_title_0?ie=UTF8&qid=1355257238&sr=1-1",
+amazon_link2:"http://www.amazon.com/Hyperspace-Scientific-Odyssey-Parallel-Universes/dp/0385477058/ref=wl_it_dp_o_pC_nS_nC?ie=UTF8&colid=N55WK4E5RGPM&coliid=I39ORQQR1YUM18"
+}
+                        </code></pre>
+                    </div>
+        </section>
+
+        <section>
+            <h3>Baselines</h3>
+                <p>Usually we try to go from generality - what does everything share in common, to specific - what makes everything unique?</p>
+                <p>Asking "what does something have to have <em>at minimum</em> to be this type of thing?" is a good way to find out a lot about your models.</p>
+                <p><a href="http://www.schema.org">Schema.org</a> did a lot of this - check them out for some examples.</p>
+        </section>
+
+        <section>
+            <h3>Exercise Time!</h3>
+        		<h3>Modeling Places</h3>
+        <p>In this exercise, you'll model two places for storage in a reviews website like Yelp, Google Local, or Foursquare.</p>
+        <p>We're not terribly worried about format for this. <strong>PAIR UP</strong> and don't worry about getting JSON exactly right - the important part is "name" : "value".
+        If you get stuck trying to read something you wrote, here's a <a href="http://json.parser.online.fr/">JSON Parser</a> that will organize things for you.</p>
+			</section>
+			<section>
+				<h3>Exercise Time!</h3>
+				<h3>Modeling Places</h3>
+				<ul>
+						<li>First, create a new file - call it places.json</li>
+						<li>Start with an array with two or more objects - <code>[{}, {}, {}]</code></li>
+						<li>We're going to model places from this list, or choose your own favorite places!
+								<ul>
+										<li><a href="http://www.yelp.com/biz/seattle-coffee-works-seattle">Seattle Coffee Works</a></li>
+										<li><a href="http://www.yelp.com/biz/macrina-bakery-and-cafe-seattle-2">Macrina Bakery</a></li>
+										<li><a href="http://www.yelp.com/biz/bathtub-gin-and-co-seattle">Bathtub Gin &amp; Co</a></li>
+								</ul>
+						</li>
+			</section>
+			<section>
+				<h3>Exercise Time!</h3>
+				<h3>Modeling Places</h3>
+					<p>Ask yourself these questions:</p>
+							<div style="font-size:24px;">
+							<ul>
+									<li>What properties do each of these places have? An address? A name?</li>
+									<li>How are they different?</li>
+									<li>What makes them different <em>in the same way?</em> (like type: grocery store, or pub, or coffee shop)</li>
+									<li>What information is useful, vs not useful? (phone numbers are useful, but number of bricks isn't. Unless you are building a national brick database.)</li>
+									<li>What is someone looking for when they look up information about this thing? What am <em>I</em> looking for?</li>
+							</ul></div>
+					</ul>
+			</section>
+
+				<section>
+					<h3>Entity Modeling</h3>
+					<ul>
+						<li>Entity type - any type of object that we want to store data about</li>
+						<li>Attribute - the data that we want to keep about each entity</li>
+						<li>Primary key - the attribute used to identify a specific entity</li>
+						<li>Composite key - a primary key made up of a unique combination of attributes</li>
+					</ul>
+				</section>
+
+        <section>
+            <h3>Relationships</h3>
+            <img src="images/coursetrackingexamplerdbms.jpg">
+        </section>
+
+        <section>
+            <h3>Non-relational Systems</h3>
+            <img src="images/coursetrackingexamplenoSQL.jpg">
+        </section>
+
+        <section>
+            <h3>Modeling Relationships</h3>
+                <p>Or... How does a non-relational DB work?</p>
+								<p>Recommended reading:</p> <p><a href="http://www.ignoredbydinosaurs.com/2013/05/explaining-non-relational-databases-my-mom">Explaining Non-Relational Databases to My Mom</a></p>
+        </section>
+
+        <section>
+            <h3>Types of Relationships</h3>
+                <ul>
+                    <li>One-to-One: A car model is made by one company.</li>
+                    <li>One-to-Many: One class has many students.</li>
+                    <li>Many-to-One: Many employees work in one department.</li>
+                    <li>Many-to-Many: Many orders have many products.</li>
+                </ul><br><br>
+								<p><a href="http://www.databasedesign.co.uk/bookdatabasesafirstcourse/chap3/chap3.htm">Deeper reading on Entity Relationship Modeling</a></p>
+        </section>
+
+        <section>
+            <h3>Together!</h3>
+                <p>Let's try to model recipes together.</p>
+                <a href="http://allrecipes.com/recipe/chocolate-mousse-3/detail.aspx"><img src="images/mousse.jpg" style="float:left; width:40%"></a> <a href="http://allrecipes.com/recipe/tiramisu-4/"><img src="images/tiramisu.jpg" style="float:right; padding-left:20px; width:40%" ></a>
+                <p style="clear:both">How are Foods and Recipes related? <br>Foods can appear in multiple recipes, so it makes sense not to duplicate foods.</p>
+        </section>
+
+        <section>
+            <h3>It's mostly decision-making</h3>
+                <h3>Questions to ask:</h3>
+                <ul>
+                    <li>What does it mean to be an object? (duuuuuude.)</li>
+                    <li>If I split these objects up, what does that mean for related data?</li>
+                    <li>If I create a relationship, what does that mean for related data?</li>
+                    <li>If I create a hierarchy, what does that mean for sub-objects? Related data?</li>
+                    <li>Will this allow me to do more things later, or restrict what I can do later?</li>
+                    <li>Is it worth the time right now to have an existential crisis about this?! (Usually not.)</li>
+                </ul>
+        </section>
+
+        <section>
+            <h3>Exercise Time</h3>
+						<h3 id="exercise2">Modeling Movies!</h3>
+        <p>Making movies takes lots of relationships - Actors, Producers, Studios - we don't want to duplicate data, so let's form some relationships!</p>
+
+        <ul>
+            <li>First, create a new file - call it movies.json</li>
+            <li>Start with three arrays with four or more objects -
+                <pre>
+Movies = [{}, {}, {}, {}]
+Actors = [{}, {}, {}, {}]
+Studios = [{}, {}, {}, {}]
+                </pre>
+            </li>
+					</section>
+					<section>
+						<h3>Exercise Time</h3>
+						<h3 id="exercise2">Modeling Movies!</h3>
+            <li>We're going to model four different movies!
+                <ul>
+                    <li><a href="http://www.imdb.com/title/tt1707386/">Les Misérables</a></li>
+                    <li><a href="http://www.imdb.com/title/tt0821642">The Soloist</a></li>
+                    <li><a href="http://www.imdb.com/title/tt0988045/">Sherlock Holmes</a></li>
+                    <li><a href="http://www.imdb.com/title/tt1446192/">Rise of the Guardians</a></li>
+                </ul>
+            </li>
+					</section>
+					<section>
+						<h3>Exercise Time</h3>
+						<h3 id="exercise2">Modeling Movies!</h3>
+            <li>These share actors, so we're going to assign an ID to each actor, studio, and movie.</li>
+            <li>In each movie there are lots of actors - list only the top-billed actors for simplicity's sake. Create an array to hold just the IDs of the actors.</li>
+            <li>Reference the ID of the actor you want to name by looking in your list of actors, and using the ID field.</li>
+            <li>Do the same for the studios- reference them by ID (but you don't have to use an array)</li>
+            <li>Try to simplify the studios - don't distinguish between Universal Studios and Universal Studios France. We're not IMDB :)</li>
+        </ul>
+        </section>
+
+        <section>
+            <h3>Don't be an "Architecture Astronaut"</h3>
+                <a href="http://xkcd.com/974/"><img class="center" src="images/save_time_xkcd.png"></a>
+                <br><br>
+                <p><em>"It is better to have a codebase you're moderately ashamed of that's full of hacks than nothing at all."</em><br>- Ancient Native American Proverb </p>
+        </section>
+
+        <section>
+            <h3>Resources</h3>
+                <ul>
+                    <li><a href="http://www.schema.org/">Schema.org</a> - A bunch of geeks decided to write down once and for all what you need at minimum to be anything.</li>
+                    <li>A <a href="http://www.agiledata.org/essays/dataModeling101.html">super technical essay</a> at agiledata.org</li>
+										<li>Ignored by Dinosaur's blog post: <a href="http://www.ignoredbydinosaurs.com/2013/05/explaining-non-relational-databases-my-mom">Explaining Non-Relational Databases to My Mom</a></li>
+										<li><a href="http://web.simmons.edu/~benoit/lis458/CrowsFootNotation.pdf">Explanation of Entity Relationship Diagrams and Crows Feet Notation</a></li>
+							</ul>
+        </section>
+        <section>
+          <h2>Questions?</h2>
+          <div style = "font-size:1200%; height:100%; margin-top:40%" class ="blue">?
+            <div class ="clear"></div></div>
+        </section>
+			</div>
+  		<footer>
+        <div class="copyright">
+          Intro to Databases -- Girl Develop It --
+          <a rel="license" href="http://creativecommons.org/licenses/by-nc/3.0/deed.en_US"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc/3.0/80x15.png" /></a>
+        </div>
+      </footer>
+		</div>
+
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.min.js"></script>
+
+		<script>
+
+			// Full list of configuration options available here:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: false,
+				history: true,
+
+				theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+				transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/none
+
+				// Optional libraries used to extend on reveal.js
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/showdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+					{ src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+				]
+			});
+
+		</script>
+
+	</body>
+</html>
